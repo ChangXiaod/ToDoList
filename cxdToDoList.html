@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{margin: 0;padding: 0;}
+        ul{list-style:none;width: 580px;margin: 50px auto;background-color: #e3e3e3;}
+        
+        .heads{background-color:#333;color: #fff;}
+        li{padding: 10px 5px;}
+        .oinput{border-radius: 5px;width: 300px;margin-left: 150px;height: 25px;}
+        .todolist{margin-left: 20px;}
+        .count{float: right;font-weight: 600;font-size: 14px; height: 25px;line-height: 25px; width: 25px;border-radius: 50%;background-color: #999;text-align: center;margin-top: 10px;margin-right: 20px;}
+        h2{margin-left: 20px;}
+        .top1{height: 30px;display: none;}
+        .text1{height: 23px;width: 500px;display: inline-block;background-color: #fff;}
+        .fangge{width: 20px;height: 20px; border-radius: 5%;background-color: green;}
+        .del {width: 20px;height: 20px;display: inline-block;text-align: center; border-radius: 50%;background-color: #ccc;}
+        
+    </style>
+</head>
+<body>
+    <div class="box">
+        <ul>
+            <li class="heads">
+                <span class="todolist">ToDoList</span>
+                <input type="text" placeholder="添加ToDo" class="oinput">
+            </li>
+            <li>
+                <h2>正在进行 <span class="count" id="one">0</span></h2>  
+            </li>
+            <li>
+                <h2>已经完成 <span class="count" id="two">0</span></h2>    
+            </li>
+            <li></li>
+            <li class="top1">
+                <input type="checkbox" class="fangge">
+                <span class="text1"></span>
+                <span class="del">X</span>
+            </li>
+            
+        </ul>
+    </div>
+
+
+    <script>
+        var oinput = document.getElementsByClassName("oinput")[0];
+        var oli = document.getElementsByTagName("li");
+        var oul = document.getElementsByTagName("ul")[0];
+        var olitop11 = oul.getElementsByClassName("top1")[0]
+        var ofangge = document.getElementsByClassName("fangge");
+        // 回车提交
+        oinput.onkeydown = function(event){   
+            if(event.keyCode === 13){
+                if( oinput.value === ""){
+                return
+                }else{
+
+                var olitop1 = olitop11.cloneNode(true);
+                console.log(olitop1)
+                olitop1.style.display = "block";
+
+                document.querySelector("ul").insertBefore(olitop1,oli[2])
+                olitop1.children[1].innerHTML = oinput.value;
+                oinput.value = "";
+                
+                // 数据按钮更新
+                var onespan = document.getElementById("one");
+                let oneall = parseInt(onespan.innerHTML) + 1;
+                onespan.innerHTML = oneall;
+                }
+            }
+        }
+
+        // 4 事件委托
+
+        var oul = document.getElementsByTagName("ul")[0];
+        oul.onclick = function(event){
+            var _this = event.target;
+            var onespan = document.getElementById("one");
+            if(_this.className === "fangge"){
+                var olitop2 = _this.parentElement.cloneNode(true);
+                olitop2.children[2].className = "delete";
+                oul.appendChild(olitop2)
+                    olitop2.style.color = "#999"
+                
+                // 数据按钮更新
+                var twospan = document.getElementById("two");
+                let twoall = parseInt(twospan.innerHTML) + 1;
+                twospan.innerHTML = twoall;
+
+                
+                let oneall = parseInt(onespan.innerHTML) - 1;
+                onespan.innerHTML = oneall;
+                _this.parentElement.parentElement.removeChild(_this.parentElement)
+
+               
+            }
+            var odel = document.getElementsByClassName("del")[0];
+            if(_this.className === "del"){
+                // oul.removeChild(_this.parentElement)
+                let oneall = parseInt(onespan.innerHTML) - 1;
+                
+                onespan.innerHTML = oneall;
+                _this.parentElement.parentElement.removeChild(_this.parentElement)
+            }
+           
+            if(_this.className === "delete"){
+                var twospan = document.getElementById("two");
+                let twoall = parseInt(twospan.innerHTML) - 1;
+                twospan.innerHTML = twoall;
+                oul.removeChild(_this.parentElement)
+                
+            }
+        }
+        
+    </script>
+</body>
+</html>
